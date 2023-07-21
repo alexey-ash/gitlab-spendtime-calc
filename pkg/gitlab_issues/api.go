@@ -8,10 +8,12 @@ import (
 
 const ISO8601 = "2006-01-02"
 
+// GitlabAuth функция принимает токен и адрес API, и возвращает клиент.
 func GitlabAuth(gitlabAPIToken string, gitlabAPIUrl string) (*gitlab.Client, error) {
 	return gitlab.NewClient(gitlabAPIToken, gitlab.WithBaseURL(gitlabAPIUrl))
 }
 
+// GetActiveMilestone поиск активного спринта (milestone).
 func GetActiveMilestone(git *gitlab.Client, projectID string) (milestoneTitle string, statusCode int, err error) {
 	currentDate := time.Now().UTC()
 
@@ -34,6 +36,7 @@ func GetActiveMilestone(git *gitlab.Client, projectID string) (milestoneTitle st
 	return "", 0, nil
 }
 
+// GetMilestoneIssues поиск тасок (issue) пользователя в активном спринте.
 func GetMilestoneIssues(git *gitlab.Client, projectID string, milestoneTitle string, username string) (issues []*gitlab.Issue, err error) {
 	opt := &gitlab.ListProjectIssuesOptions{
 		AssigneeUsername: gitlab.String(username),
